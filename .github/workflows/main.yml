@@ -61,7 +61,7 @@ jobs:
        - name: Install
          run: pip install pytest-cov
        - name: Run
-         run: python3 -m pytest -cov=. . --doctest-modules --ignore=main.py
+         run: python3 -m pytest -cov=src . --doctest-modules --ignore=main.py
           
           
   publish_coverage:
