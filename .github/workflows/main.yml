@@ -53,9 +53,19 @@ jobs:
         
       - name: Run pytest
         run: python3 -m pytest src/dep.py --doctest-modules
-        
-  publish_coverage:
+     
+  run_coverage:
     needs: tests
+    runs-on: ubuntu-latest
+    steps:
+       - name: Install
+         run: pip install pytest-cov
+       - name: Run
+         run: python3 -m pytest -cov=. . --doctest-modules --ignore=main.py
+          
+          
+  publish_coverage:
+    needs: run_coverage
     runs-on: ubuntu-latest
     steps:
       - name: Install
