@@ -58,10 +58,12 @@ jobs:
     needs: tests
     runs-on: ubuntu-latest
     steps:
+       - name: Checkout
+         uses: actions/checkout@v3
        - name: Install
          run: pip install pytest-cov
        - name: Run
-         run: python3 -m pytest -cov=src . --doctest-modules --ignore=main.py
+         run: python3 -m pytest -cov=src --doctest-modules --ignore=src/main.py
           
           
   publish_coverage:
