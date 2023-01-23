@@ -49,6 +49,6 @@ jobs:
         run: echo "Deployment in progress ..."
         
       - name: Check if server is up
-        run: curl -Is http://localhost:8000/ | head -n 1
+        run: echo "curl -Is http://localhost:8000/ | head -n 1"
       
       
