@@ -33,8 +33,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
     
-      - name: Install pytest
-        run: pip install pytest
+      - name: Install pytest and bottle
+        run: pip install bottle pytest
         
       - name: Run pytest
         run: python3 -m pytest src/dep.py --doctest-modules
+  
+  cd:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Displayc message
+        run: echo "Deployment in progress ..."
+        
+      - name: Check if server is up
+        run: curl -Is http://localhost:8000/ | head -n 1
+      
+      
