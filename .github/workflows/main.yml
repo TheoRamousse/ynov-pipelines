@@ -64,16 +64,10 @@ jobs:
          run: pip install pytest-cov
        - name: Run
          run: python3 -m pytest -cov=src --doctest-modules --ignore=src/main.py
-          
-          
-  publish_coverage:
-    needs: run_coverage
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install
-        run: pip install coverage-badge
-      - name: Publish
-        run: coverage-badge -o coverage.svg
+       - name: Install
+         run: pip install coverage-badge
+       - name: Publish
+         run: coverage-badge -o coverage.svg
   
   cd:
     needs: tests
