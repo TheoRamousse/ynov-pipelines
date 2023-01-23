@@ -12,6 +12,20 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+      environment:
+        description: 'Environment to run tests against'
+        type: environment
+        required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -49,6 +63,6 @@ jobs:
         run: echo "Deployment in progress ..."
         
       - name: Check if server is up
-        run: echo "$(curl -Is http://localhost:8000/ | head -n 1)"
-      
-      
+        run: |
+          pip install requests
+          python -c "import requests; exit(1) if requests.get('https://www.google.fr').status_code != 200 else exit(0)"
