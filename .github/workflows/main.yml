@@ -1,0 +1,77 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+      environment:
+        description: 'Environment to run tests against'
+        type: environment
+        required: false
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  flake8:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Install flake8
+        run: pip --disable-pip-version-check install flake8
+
+      - name: Lint with flake8
+        run: python3 -m flake8 src/*.py
+        
+  tests:
+    needs: flake8
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+    
+      - name: Install pytest and bottle
+        run: pip install bottle pytest
+        
+      - name: Run pytest
+        run: python3 -m pytest src/dep.py --doctest-modules
+  
+  cd:
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Displayc message
+        run: echo "Deployment in progress ..."
+        
+      - name: Check if server is up
+        run: |
+          pip install requests
+          python -c "import requests; exit(1) if requests.get('https://www.google.fr').status_code != 200 else exit(0)"
+          
+  end_pipeline:
+    needs: cd
+    runs-on: ubuntu-latest
+    steps:
+       - name: Send Stack message
+         run: echo "Pipeline ended"
