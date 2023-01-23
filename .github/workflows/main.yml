@@ -53,6 +53,15 @@ jobs:
         
       - name: Run pytest
         run: python3 -m pytest src/dep.py --doctest-modules
+        
+  publish_coverage:
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install
+        run: pip install coverage-badge
+      - name: Publish
+        run: coverage-badge -o coverage.svg
   
   cd:
     needs: tests
